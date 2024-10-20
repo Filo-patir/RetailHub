@@ -1,5 +1,5 @@
 query GetDraftOrdersByCustomerNormal($query: String!) {
-    draftOrders(query: $query, first: 100) {
+    draftOrders(query: $query, first: 50) {
         nodes {
             id
             lineItems(first: 1) {

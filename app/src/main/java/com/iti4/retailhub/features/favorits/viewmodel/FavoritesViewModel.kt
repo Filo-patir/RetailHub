@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iti4.retailhub.datastorage.IRepository
 import com.iti4.retailhub.datastorage.network.ApiState
+import com.iti4.retailhub.models.CountryCodes
 import com.iti4.retailhub.type.MetafieldDeleteInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,10 @@ class FavoritesViewModel @Inject constructor(private val repository: IRepository
 
     fun  getFavorites(){
         viewModelScope.launch(Dispatchers.IO){
-            repository.getCustomerFavoritesoById(customerId!!)
+
+            //handle this customer id
+            repository.getCustomerFavoritesoById(customerId!!,
+               "")
                 .catch {
                         e -> _savedFavortes.emit(ApiState.Error(e))
                 }
@@ -44,4 +48,14 @@ class FavoritesViewModel @Inject constructor(private val repository: IRepository
                 }
         }
     }
+
+    fun getConversionRates(currencyCode: CountryCodes): Double {
+        return repository.getConversionRates(currencyCode)
+    }
+
+    fun getCurrencyCode(): CountryCodes {
+        return repository.getCurrencyCode()
+    }
+
+
 }

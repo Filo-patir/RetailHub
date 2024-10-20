@@ -28,6 +28,7 @@
                 android:id="@+id/ivMyBagPromoImage"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
+                android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -59,30 +60,16 @@
                 app:layout_constraintStart_toStartOf="@+id/tvMyBagPromoTitle"
                 app:layout_constraintTop_toBottomOf="@+id/tvMyBagPromoTitle" />
 
-            <TextView
-                android:id="@+id/tvMyBagPromoRemainingTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="6 days remaining"
-                android:textColor="@color/grey"
-                android:textSize="11sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <Button
                 android:id="@+id/btnMyBagPromoApply"
                 style="@style/OrangeWideButton"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/Apply"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvMyBagPromoRemainingTime"
-                app:layout_constraintStart_toStartOf="@+id/tvMyBagPromoRemainingTime"
-                app:layout_constraintTop_toBottomOf="@+id/tvMyBagPromoRemainingTime" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

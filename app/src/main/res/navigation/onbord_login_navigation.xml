@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_lauout"
-    app:startDestination="@id/signUpFragment">
+    app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.iti4.retailhub.features.loginandsignup.view.SignUpFragment"
+        android:name="com.iti4.retailhub.features.login_and_signup.view.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
@@ -15,7 +15,18 @@
     </fragment>
     <fragment
         android:id="@+id/loginInFragment"
-        android:name="com.iti4.retailhub.features.loginandsignup.view.LoginInFragment"
+        android:name="com.iti4.retailhub.features.login_and_signup.view.LoginInFragment"
         android:label="fragment_login_in"
         tools:layout="@layout/fragment_login_in" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.iti4.retailhub.features.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

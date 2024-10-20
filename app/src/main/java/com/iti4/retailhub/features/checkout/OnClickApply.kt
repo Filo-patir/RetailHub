@@ -1,8 +1,8 @@
 package com.iti4.retailhub.features.checkout
 
-import com.iti4.retailhub.features.mybag.Promo
+import com.iti4.retailhub.models.Discount
 
 interface OnClickApply {
-    fun onClickApply(promo: Promo)
+    fun onClickApply(discount: Discount)
 
 }

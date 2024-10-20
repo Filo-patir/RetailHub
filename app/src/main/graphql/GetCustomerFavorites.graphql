@@ -1,7 +1,7 @@
-query GetCustomerFavorites($input:ID!){
+query GetCustomerFavorites($input:ID!,$namespace:String!){
     customer(id: $input) {
         id
-        metafields(first:50){
+        metafields(first:50,namespace: $namespace){
             nodes{
                 id,
                 namespace,

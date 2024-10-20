@@ -4,21 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shimmerCheckout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:shimmer_auto_start="true"
+    app:shimmer_highlight_alpha="1"
+    android:background="@color/white"
     tools:context=".features.checkout.CheckoutFragment">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <include android:id="@+id/checkoutAppbar" layout="@layout/app_bar"/>
+
+    <include
+        android:id="@+id/checkoutAppbar"
+        layout="@layout/app_bar_mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkoutAppbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupNoAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:constraint_referenced_ids="textView15,btnCheckoutAddNewAddress" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -34,12 +53,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/cvAddressCheckout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="visible"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,11 +98,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
                         android:fontFamily="@font/metropolis_regular"
                         android:text="Chino Hills, CA 81231, United States"
                         android:textColor="@color/black_variant"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tvAddressAddress"
                         app:layout_constraintTop_toBottomOf="@+id/tvAddressAddress" />
 
@@ -96,6 +114,20 @@
                         android:textColor="@color/red_color"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tvAddressFullName" />
+
+                    <TextView
+                        android:id="@+id/tvPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="TextView"
+                        android:textColor="@color/black_variant"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvAddressRestOfAddress"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAddressRestOfAddress" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -108,8 +140,8 @@
                 android:text="@string/Payment"
                 android:textColor="@color/black_variant"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                app:layout_constraintStart_toStartOf="@+id/cvAddressCheckout"
+                app:layout_constraintTop_toBottomOf="@+id/cvAddressCheckout" />
 
 
             <TextView
@@ -156,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/metropolis_semibold"
-                android:text="120$"
+                android:text="0"
                 android:textColor="@color/black_variant"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -227,10 +259,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/metropolis_semibold"
-                android:text="- 20$"
+                android:text="0"
                 android:textColor="@color/red_color"
                 android:textSize="16sp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView7" />
 
@@ -254,7 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/metropolis_semibold"
-                android:text="100 Egp"
+                android:text="0"
                 android:textColor="@color/black_variant"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -291,9 +323,54 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/metropolis_medium"
+                android:text="@string/NoAddress"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <ImageButton
+                android:id="@+id/btnCheckoutAddNewAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circular_background_black"
+                android:src="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+            <TextView
+                android:id="@+id/tvInvalidDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/metropolis_regular"
+                android:text="@string/DiscountInvalid"
+                android:textColor="@color/red_color"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/promocode_edittext"
+                app:layout_constraintStart_toStartOf="@+id/promocode_edittext"
+                app:layout_constraintTop_toBottomOf="@+id/promocode_edittext" />
+
+            <TextView
+                android:id="@+id/tvNoAddressAtCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/PleaseAddAnAddress"
+                android:textColor="@color/red_color"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </com.facebook.shimmer.ShimmerFrameLayout>

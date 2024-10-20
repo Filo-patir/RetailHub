@@ -3,11 +3,16 @@ package com.iti4.retailhub.models
 import android.os.Parcel
 import android.os.Parcelable
 
+data class CustomerAddressV2(
+    var address1: String?, var address2: String?, var city: String?, var country: String?,
+    var phone: String?, var name: String?,
+    var isNew: Boolean = false, var id: String? = null, var isDefault: Boolean = false
+)
 
 data class CustomerAddress(
     var address1: String, var address2: String,
     var phone: String, var name: String,
-    var newAddress: Boolean = false, var id:String?=null, var isDefault :Boolean = false
+    var newAddress: Boolean = false, var id: String? = null, var isDefault: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),

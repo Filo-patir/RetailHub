@@ -26,7 +26,7 @@ val auth =Firebase.auth
     override suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult? {
         return auth.signInWithEmailAndPassword(email, password).await()
     }
-    override suspend fun loginOut():Boolean {
+    override  fun loginOut():Boolean {
         try {
             auth.signOut()
             return true
@@ -42,13 +42,13 @@ val auth =Firebase.auth
             false // Failure
         }
     }
-    override  suspend fun signIn(): IntentSender? = try {
+  /*  override  suspend fun signIn(): IntentSender? = try {
         val result = Identity.getSignInClient(context).beginSignIn(buildSignInRequest()).await()
         result.pendingIntent.intentSender
     } catch (e: Exception) {
         null
     }
-        private fun buildSignInRequest(): BeginSignInRequest {
+    private fun buildSignInRequest(): BeginSignInRequest {
             return BeginSignInRequest.Builder()
                 .setGoogleIdTokenRequestOptions(
                     GoogleIdTokenRequestOptions.builder()
@@ -59,7 +59,7 @@ val auth =Firebase.auth
                 )
                 .setAutoSelectEnabled(true)
                 .build()
-        }
+    }
     override suspend fun signInWithIntent(intent: Intent): AuthResult? {
         val credential = Identity.getSignInClient(context).getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
@@ -68,6 +68,23 @@ val auth =Firebase.auth
             return auth.signInWithCredential(firebaseCredential).await()
         }
         return null
+    }
+
+
+*/
+
+
+
+
+
+    override suspend fun signWithGoogle(idToken: String): FirebaseUser? {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val authResult = auth.signInWithCredential(credential).await()
+            authResult.user
+        } catch (e: Exception) {
+            null
+        }
     }
 }
 

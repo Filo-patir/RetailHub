@@ -5,20 +5,43 @@
     android:id="@+id/frameLayout5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".search.view.FilterFragment">
+    tools:context=".features.shop.search.filter.FilterFragment">
+
+    <include android:id="@+id/filterAppbar" layout="@layout/app_bar"/>
+
+    <Button
+        android:id="@+id/filterBrandsBtn"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/transparent"
+        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/brands"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black_variant"
+        android:textSize="16sp"
+        app:icon="@drawable/baseline_arrow_forward_ios_24"
+        app:iconGravity="end"
+        app:iconTint="@color/black_variant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup3" />
+
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/metropolis_semibold"
         android:text="@string/price_range"
         android:textColor="@color/black_variant"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/filterAppbar" />
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/rangeSlider"
@@ -26,10 +49,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:contentDescription="EGP"
         android:valueFrom="0"
         android:valueTo="400"
-        app:labelBehavior="withinBounds"
+        android:stepSize="1"
+        app:labelBehavior="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView18"
         app:layout_constraintTop_toBottomOf="@+id/textView18"
@@ -39,34 +62,8 @@
         app:thumbWidth="20dp"
         app:trackColorActive="@color/red_color"
         app:trackColorInactive="@color/grey"
-        app:trackHeight="5dp" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="@string/sizes"
-        android:textColor="@color/black_variant"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/rangeSlider"
-        app:layout_constraintTop_toBottomOf="@+id/rangeSlider" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19">
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.chip.ChipGroup>
+        app:trackHeight="5dp"
+        app:values="@array/initial_slider_values" />
 
     <TextView
         android:id="@+id/textView20"
@@ -77,15 +74,16 @@
         android:text="@string/category"
         android:textColor="@color/black_variant"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/chipGroup2"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
+        app:layout_constraintStart_toStartOf="@+id/rangeSlider"
+        app:layout_constraintTop_toBottomOf="@+id/rangeSlider" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:chipSpacingHorizontal="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/chipGroup2"
+        app:layout_constraintEnd_toEndOf="@+id/rangeSlider"
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/textView20"
         app:singleLine="true"
@@ -95,54 +93,30 @@
             android:id="@+id/menChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/men" />
+            android:checkable="true"
+            android:text="@string/men"
+            android:textColor="@color/chip_text_selector"
+            app:chipBackgroundColor="@color/chip_selector" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/womenChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/women" />
+            android:checkable="true"
+            android:text="@string/women"
+            android:textColor="@color/chip_text_selector"
+            app:chipBackgroundColor="@color/chip_selector" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/kidsChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/kids" />
+            android:checkable="true"
+            android:text="@string/kids"
+            android:textColor="@color/chip_text_selector"
+            app:chipBackgroundColor="@color/chip_selector" />
     </com.google.android.material.chip.ChipGroup>
 
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="@string/brands"
-        android:textColor="@color/black_variant"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup3" />
-
-    <TextView
-        android:id="@+id/brandFiltered"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/metropolis_regular"
-        android:textColor="@color/grey"
-        android:textSize="11sp"
-        app:layout_constraintStart_toStartOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/textView21"
-        tools:text="Brands" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/brandsRV"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/discardBtn"
-        app:layout_constraintTop_toBottomOf="@+id/brandFiltered"
-        tools:layout_editor_absoluteX="0dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/applyBtn"
@@ -167,6 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/button_background_outline"
         android:fontFamily="@font/metropolis_medium"
         android:text="@string/discard"
         android:textColor="@color/black_variant"
@@ -175,4 +150,5 @@
         app:layout_constraintEnd_toStartOf="@+id/applyBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

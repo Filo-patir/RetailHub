@@ -51,6 +51,7 @@ data class CartProduct(
 }
 
 fun CartProduct.toLineItem(): LineItemInputModel {
+
     return LineItemInputModel(
         variantId = this.itemId,
         quantity = this.itemQuantity

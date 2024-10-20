@@ -3,17 +3,22 @@ package com.iti4.retailhub.datastorage.network
 import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
+import com.iti4.retailhub.AddTagsMutation
 import com.iti4.retailhub.CollectionsQuery
 import com.iti4.retailhub.CompleteDraftOrderMutation
 import com.iti4.retailhub.CreateCustomerMutation
 import com.iti4.retailhub.CreateDraftOrderMutation
 import com.iti4.retailhub.CustomerEmailSearchQuery
+import com.iti4.retailhub.CustomerUpdateDefaultAddressMutation
 import com.iti4.retailhub.DeleteCustomerFavoritItemMutation
 import com.iti4.retailhub.DeleteDraftOrderMutation
 import com.iti4.retailhub.DraftOrderInvoiceSendMutation
 import com.iti4.retailhub.GetAddressesByIdQuery
+import com.iti4.retailhub.GetAddressesDefaultIdQuery
 import com.iti4.retailhub.GetCustomerByIdQuery
 import com.iti4.retailhub.GetCustomerFavoritesQuery
+import com.iti4.retailhub.GetCustomerUsedDiscountsQuery
+import com.iti4.retailhub.GetDiscountsQuery
 import com.iti4.retailhub.GetDraftOrdersByCustomerQuery
 import com.iti4.retailhub.GetProductTypesOfCollectionQuery
 import com.iti4.retailhub.MarkAsPaidMutation
@@ -24,20 +29,25 @@ import com.iti4.retailhub.ProductsQuery
 import com.iti4.retailhub.UpdateCustomerAddressesMutation
 import com.iti4.retailhub.UpdateCustomerFavoritesMetafieldsMutation
 import com.iti4.retailhub.UpdateDraftOrderMutation
+import com.iti4.retailhub.logic.customerAddressV2ToMailingAddressInput
 import com.iti4.retailhub.logic.toBrandsList
 import com.iti4.retailhub.logic.toCategory
+import com.iti4.retailhub.logic.toDiscountList
 import com.iti4.retailhub.logic.toOrder
 import com.iti4.retailhub.logic.toOrderDetails
 import com.iti4.retailhub.logic.toProductsList
 import com.iti4.retailhub.models.Brands
 import com.iti4.retailhub.models.CartProduct
 import com.iti4.retailhub.models.Category
-import com.iti4.retailhub.models.CustomerAddress
+import com.iti4.retailhub.models.CustomerAddressV2
+import com.iti4.retailhub.models.Discount
 import com.iti4.retailhub.models.DraftOrderInputModel
 import com.iti4.retailhub.models.HomeProducts
 import com.iti4.retailhub.models.Order
 import com.iti4.retailhub.models.OrderDetails
 import com.iti4.retailhub.type.CustomerInput
+import com.iti4.retailhub.type.DraftOrderAppliedDiscountInput
+import com.iti4.retailhub.type.DraftOrderAppliedDiscountType
 import com.iti4.retailhub.type.DraftOrderDeleteInput
 import com.iti4.retailhub.type.DraftOrderInput
 import com.iti4.retailhub.type.DraftOrderLineItemInput
@@ -46,6 +56,8 @@ import com.iti4.retailhub.type.MetafieldDeleteInput
 import com.iti4.retailhub.type.OrderMarkAsPaidInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retryWhen
+import okio.IOException
 import javax.inject.Inject
 
 
@@ -58,7 +70,7 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
         } else {
             throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
         }
-    }
+    }.retryWhen { cause, _ -> cause.message != "Something went wrong" }
 
     override fun getCustomerIdByEmail(email: String): Flow<CustomerEmailSearchQuery.Customers> =
         flow {
@@ -78,6 +90,7 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
             throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
         }
     }
+
     override fun deleteCustomerFavoritItem(id: MetafieldDeleteInput): Flow<String?> = flow {
         val response = apolloClient.mutation(DeleteCustomerFavoritItemMutation(id)).execute()
         if (!response.hasErrors() && response.data != null) {
@@ -128,8 +141,7 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
             emit(response.data!!.orders.nodes.map {
                 it.toOrder()
             })
-        }
-        else {
+        } else {
             throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
         }
     }
@@ -152,8 +164,13 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
             throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
         }
     }
-    override fun getCustomerFavoritesoById(id: String): Flow<GetCustomerFavoritesQuery.Customer> = flow {
-        val response = apolloClient.query(GetCustomerFavoritesQuery(id)).execute()
+
+    override fun getCustomerFavoritesoById(
+        id: String,
+        namespace: String
+    ): Flow<GetCustomerFavoritesQuery.Customer> = flow {
+        val response =
+            apolloClient.query(GetCustomerFavoritesQuery(id, namespace)).execute()
         if (!response.hasErrors() && response.data != null) {
             emit(response.data!!.customer!!)
         } else {
@@ -163,22 +180,33 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
 
     override fun createCheckoutDraftOrder(draftOrderInputModel: DraftOrderInputModel): Flow<CreateDraftOrderMutation.DraftOrderCreate> =
         flow {
+            Log.i("here", "remote: " + draftOrderInputModel)
             val draftOrderInput = toGraphQLDraftOrderInput(draftOrderInputModel)
+
             val response =
-                apolloClient.mutation(CreateDraftOrderMutation(draftOrderInput)).execute()
+                apolloClient.mutation(CreateDraftOrderMutation(draftOrderInput))
+                    .execute()
+
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.draftOrderCreate!!)
             } else {
-                throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
             }
         }
+
     override fun saveProductToFavotes(input: CustomerInput): Flow<UpdateCustomerFavoritesMetafieldsMutation.CustomerUpdate> =
         flow {
-            val response = apolloClient.mutation(UpdateCustomerFavoritesMetafieldsMutation(input)).execute()
+            val response =
+                apolloClient.mutation(UpdateCustomerFavoritesMetafieldsMutation(input))
+                    .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.customerUpdate!!)
             } else {
-                throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
             }
 
         }
@@ -188,11 +216,14 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
         flow {
             val orderMarkAsPaidInput = OrderMarkAsPaidInput(id = orderId)
             val response =
-                apolloClient.mutation(MarkAsPaidMutation(orderMarkAsPaidInput)).execute()
+                apolloClient.mutation(MarkAsPaidMutation(orderMarkAsPaidInput))
+                    .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.orderMarkAsPaid!!)
             } else {
-                throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
             }
         }
 
@@ -203,11 +234,14 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
         flow {
             val draftOrderInput = createDraftOrderFromVairentOnly(varientId, customerId)
             val response =
-                apolloClient.mutation(CreateDraftOrderMutation(draftOrderInput)).execute()
+                apolloClient.mutation(CreateDraftOrderMutation(draftOrderInput))
+                    .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.draftOrderCreate!!)
             } else {
-                throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
             }
         }
 
@@ -215,17 +249,18 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
     override fun emailCheckoutDraftOrder(draftOrderId: String): Flow<DraftOrderInvoiceSendMutation.DraftOrder> =
         flow {
             val response =
-                apolloClient.mutation(DraftOrderInvoiceSendMutation(draftOrderId)).execute()
+                apolloClient.mutation(DraftOrderInvoiceSendMutation(draftOrderId))
+                    .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.draftOrderInvoiceSend!!.draftOrder!!)
 
             }
         }
 
-    override fun getDraftOrdersByCustomer(varientId: String): Flow<GetDraftOrdersByCustomerQuery.DraftOrders> =
+    override fun getDraftOrdersByCustomer(query: String): Flow<GetDraftOrdersByCustomerQuery.DraftOrders> =
         flow {
             val response =
-                apolloClient.query(GetDraftOrdersByCustomerQuery(varientId))
+                apolloClient.query(GetDraftOrdersByCustomerQuery(query))
                     .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.draftOrders)
@@ -249,6 +284,21 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
                 )
             }
         }
+
+    override fun getDefaultAddress(customerId: String): Flow<GetAddressesDefaultIdQuery.Customer> =
+        flow {
+            val response =
+                apolloClient.query(GetAddressesDefaultIdQuery(customerId))
+                    .execute()
+            if (!response.hasErrors() && response.data != null) {
+                emit(response.data!!.customer!!)
+            } else {
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
+            }
+        }
+
 
     override fun completeCheckoutDraftOrder(draftOrderId: String): Flow<CompleteDraftOrderMutation.DraftOrder> =
         flow {
@@ -313,17 +363,86 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
 
     override fun updateCustomerAddress(
         customerId: String,
-        address: List<CustomerAddress>
+        address: List<CustomerAddressV2>
     ): Flow<UpdateCustomerAddressesMutation.CustomerUpdate> =
         flow {
             val customerInput = CustomerInput(
                 id = Optional.present(customerId),
-                addresses = Optional.present(customerAddressToMailingAddressInput(address))
+                addresses = Optional.present(
+                    address.customerAddressV2ToMailingAddressInput(
+                        address
+                    )
+                )
             )
             val response =
-                apolloClient.mutation(UpdateCustomerAddressesMutation(customerInput)).execute()
+                apolloClient.mutation(UpdateCustomerAddressesMutation(customerInput))
+                    .execute()
             if (!response.hasErrors() && response.data != null) {
                 emit(response.data!!.customerUpdate!!)
+            } else {
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
+            }
+        }
+
+    override fun updateCustomerDefaultAddress(
+        customerId: String,
+        addressId: String
+    ): Flow<CustomerUpdateDefaultAddressMutation.Customer> =
+        flow {
+            val response =
+                apolloClient.mutation(
+                    CustomerUpdateDefaultAddressMutation(
+                        addressId,
+                        customerId
+                    )
+                )
+                    .execute()
+            Log.i("here", "updateCustomerDefaultAddress:  updated" + addressId)
+            Log.i("here", "updateCustomerDefaultAddress:  updated" + response.errors)
+            if (!response.hasErrors() && response.data != null) {
+                emit(response.data!!.customerUpdateDefaultAddress!!.customer!!)
+            } else {
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
+            }
+        }
+
+    override fun setCustomerUsedDiscounts(
+        customerId: String,
+        discountCode: String
+    ): Flow<AddTagsMutation.Node> =
+        flow {
+            val response =
+                apolloClient.mutation(AddTagsMutation(customerId, listOf(discountCode)))
+                    .execute()
+            if (!response.hasErrors() && response.data != null) {
+                emit(response.data!!.tagsAdd!!.node!!)
+            } else {
+                throw Exception(
+                    response.errors?.get(0)?.message ?: "Something went wrong"
+                )
+            }
+        }
+
+
+    override fun getDiscounts(): Flow<List<Discount>> = flow {
+        val response = apolloClient.query(GetDiscountsQuery()).execute()
+        if (!response.hasErrors() && response.data != null) {
+            emit(response.data!!.codeDiscountNodes.toDiscountList())
+        } else {
+            throw Exception(response.errors?.get(0)?.message ?: "Something went wrong")
+        }
+    }
+
+    override fun getCustomerUsedDiscounts(customerId: String): Flow<List<String>> =
+        flow {
+            val response =
+                apolloClient.query(GetCustomerUsedDiscountsQuery(customerId)).execute()
+            if (!response.hasErrors() && response.data != null) {
+                emit(response!!.data!!.customer!!.tags)
             } else {
                 throw Exception(
                     response.errors?.get(0)?.message ?: "Something went wrong"
@@ -355,20 +474,6 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
         }
     }
 
-    private fun customerAddressToMailingAddressInput(address: List<CustomerAddress>): List<MailingAddressInput> {
-        return address.map {
-            Log.i("here", "customerAddressToMailingAddressInput: "+it.name)
-            val address2Data = it.address2.split(",")
-            MailingAddressInput(
-                address1 = Optional.present(it.address1),
-                address2 = Optional.present(address2Data[0]),
-                city = Optional.present(address2Data[1]),
-                country = Optional.present(address2Data[2]),
-                phone = Optional.present(it.phone),
-                firstName = Optional.present(it.name)
-            )
-        }
-    }
 
     private fun toGraphQLDraftOrderInput(draftOrderInputModel: DraftOrderInputModel): DraftOrderInput {
         return DraftOrderInput(
@@ -378,18 +483,28 @@ class RemoteDataSourceImpl @Inject constructor(private val apolloClient: ApolloC
                     quantity = lineItem.quantity
                 )
             }),
+            appliedDiscount = if (draftOrderInputModel.appliedDiscount != null) Optional.present(
+                DraftOrderAppliedDiscountInput(
+                    value = draftOrderInputModel.appliedDiscount!!.value,
+                    valueType = DraftOrderAppliedDiscountType.PERCENTAGE,
+                )
+            ) else Optional.present(null),
             customerId = Optional.present(draftOrderInputModel.customer!!.id),
             shippingAddress = draftOrderInputModel.shippingAddress!!.let {
                 Optional.present(
                     MailingAddressInput(
+                        firstName = Optional.present(draftOrderInputModel.customer.firstName),
                         address1 = Optional.present(it.address1),
+                        address2 = Optional.present(it.address2),
                         city = Optional.present(it.city),
                         country = Optional.present(it.country),
+                        phone = Optional.present(draftOrderInputModel.customer.phone),
                         zip = Optional.present(it.zip)
                     )
                 )
             },
             email = Optional.present(draftOrderInputModel.customer!!.email),
+            taxExempt = Optional.present(true)
         )
     }
 

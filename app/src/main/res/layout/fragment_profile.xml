@@ -6,19 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".features.profile.ProfileFragment">
 
+    <Button
+        android:id="@+id/profileLogoutBtn"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/transparent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/log_out"
+        android:textAlignment="viewStart"
+        android:textColor="@color/red_color"
+        android:textSize="16sp"
+        app:iconGravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expandable_layout" />
+
     <include
         android:id="@+id/profileAppbar"
         layout="@layout/app_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/profileImg"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/photo"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="profile_animation.json"
+        app:lottie_loop="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileAppbar" />
 
@@ -29,7 +48,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/metropolis_semibold"
-        tools:text="John Doe"
+        android:text="@string/welcome_to_retail_hub"
         android:textColor="@color/black_variant"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/profileImg"
@@ -43,9 +62,9 @@
         android:fontFamily="@font/metropolis_medium"
         android:textColor="@color/grey"
         android:textSize="14sp"
+        android:text="@string/sign_in_to_unlock_more_features"
         app:layout_constraintStart_toStartOf="@+id/profileName"
-        app:layout_constraintTop_toBottomOf="@+id/profileName"
-        tools:text="john.doe@gmail.com" />
+        app:layout_constraintTop_toBottomOf="@+id/profileName" />
 
     <Button
         android:id="@+id/profileOrderBtn"
@@ -84,15 +103,15 @@
         android:id="@+id/profileShippingBtn"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/transparent"
         android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        android:textSize="16sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="@string/shipping_addresses"
         android:textAlignment="viewStart"
         android:textColor="@color/black_variant"
+        android:textSize="16sp"
         app:icon="@drawable/baseline_arrow_forward_ios_24"
         app:iconGravity="end"
         app:iconTint="@color/black_variant"
@@ -114,58 +133,24 @@
         tools:text="%d addresses" />
 
     <Button
-        android:id="@+id/profileCodesBtn"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:backgroundTint="@color/transparent"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        android:textSize="16sp"
-        android:text="@string/promo_codes"
-        android:textAlignment="viewStart"
-        android:textColor="@color/black_variant"
-        app:icon="@drawable/baseline_arrow_forward_ios_24"
-        app:iconGravity="end"
-        app:iconTint="@color/black_variant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileShippingBtn" />
-
-    <TextView
-        android:id="@+id/profileCodesSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/metropolis_regular"
-        android:textColor="@color/grey"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileCodesBtn"
-        app:layout_constraintStart_toStartOf="@+id/profileCodesBtn"
-        tools:text="You have special promo codes" />
-
-    <Button
         android:id="@+id/profileSettingsBtn"
         android:layout_width="0dp"
         android:layout_height="45dp"
+        android:backgroundTint="@color/transparent"
+        android:drawableTint="@color/black_variant"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/transparent"
-        android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
-        android:textSize="16sp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textAlignment="viewStart"
         android:textColor="@color/black_variant"
+        android:textSize="16sp"
         app:icon="@drawable/baseline_arrow_forward_ios_24"
         app:iconGravity="end"
         app:iconTint="@color/black_variant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileCodesBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <TextView
         android:id="@+id/profileSettingsSubtitle"
@@ -189,15 +174,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileSettingsBtn" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
+
+    <!-- Content that will expand/collapse -->
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expandable_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileCodesBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:visibility="visible">
+
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/metropolis_medium"
+            android:text="@string/Currency"
+            android:textColor="@color/grey"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerCurrency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinnerCurrency"/>
+
+        <Spinner
+            android:id="@+id/spinnerCurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.833" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:id="@+id/divider3"
         android:layout_width="0dp"
@@ -207,6 +226,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileShippingBtn" />
+
     <View
         android:id="@+id/divider4"
         android:layout_width="0dp"
@@ -216,4 +236,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileOrderBtn" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

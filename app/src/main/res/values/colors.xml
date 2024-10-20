@@ -12,4 +12,10 @@
     <color name="signup_black_color">#222222</color>
     <color name="rating_bar_color">#FFBA49</color>
     <color name="white_variant">#F9F9F9</color>
+    <color name="burgandy">#8B0A1A</color>
+    <color name="blue">#0000FF</color>
+    <color name="gray">#808080</color>
+    <color name="light_brown">#F5DEB3</color>
+    <color name="beige">#F0E4CC</color>
+
 </resources>

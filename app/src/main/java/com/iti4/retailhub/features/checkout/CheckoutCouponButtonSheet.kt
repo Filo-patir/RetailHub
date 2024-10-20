@@ -4,18 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.iti4.retailhub.MainActivityViewModel
 import com.iti4.retailhub.databinding.MybagbottomSheetLayoutBinding
-import com.iti4.retailhub.features.mybag.Promo
+import com.iti4.retailhub.models.Discount
 
-class MyBottomSheetFragment(private val onClickBottomSheet: OnClickBottomSheet) : BottomSheetDialogFragment(),
+class MyBottomSheetFragment(private val onClickBottomSheet: OnClickBottomSheet) :
+    BottomSheetDialogFragment(),
     OnClickApply {
     private lateinit var binding: MybagbottomSheetLayoutBinding
-
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,21 +49,15 @@ class MyBottomSheetFragment(private val onClickBottomSheet: OnClickBottomSheet) 
                 this
             )
         binding.bottomSheetRecyclerView.adapter = adapter
-
-        adapter.submitList(
-            listOf(
-                Promo("Personal Offer", "mypromocode2020", "6 days remaining "),
-                Promo("Summer Sale", "summer2020", "23 days remaining "),
-                Promo("Personal Offer", "mypromocode2020", "7 days remaining "),
-                Promo("Personal Offer", "mypromocode2020", "7 days remaining "),
-                Promo("Summer Sale", "summer2020", "23 days remaining "),
-                Promo("Personal Offer", "mypromocode2020", "7 days remaining "),
-                Promo("Summer Sale", "summer2020", "23 days remaining "),
-                Promo("Personal Offer", "mypromocode2020", "7 days remaining "),
-                Promo("Summer Sale", "summer2020", "23 days remaining "),
-                Promo("Summer Sale", "summer2020", "23 days remaining "),
+        val list = mainActivityViewModel.copiedCouponsList
+        if (list.size > 0) {
+            adapter.submitList(
+                list
             )
-        )
+        } else {
+
+        }
+
     }
 
     override fun onStart() {
@@ -71,15 +68,15 @@ class MyBottomSheetFragment(private val onClickBottomSheet: OnClickBottomSheet) 
 
         bottomSheet?.let {
             val behavior = BottomSheetBehavior.from(it)
-            behavior.isFitToContents = false
-            behavior.halfExpandedRatio = 0.7f
-            behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            behavior.isFitToContents = true
+          //  behavior.halfExpandedRatio = 0.5f
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.isDraggable = false
         }
     }
 
-    override fun onClickApply(promo: Promo) {
-        binding.promocodeEdittext.etPromoCode.setText(promo.code)
+    override fun onClickApply(discount: Discount) {
+        binding.promocodeEdittext.etPromoCode.setText(discount.title)
     }
 
 

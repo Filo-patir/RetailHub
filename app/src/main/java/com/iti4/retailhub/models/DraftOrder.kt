@@ -3,8 +3,8 @@ package com.iti4.retailhub.models
 // Customer input (either by id or basic info)
 data class CustomerInputModel(
     val id: String? = null,
-    val firstName: String? = null,
-    val lastName: String? = null,
+    var firstName: String? = null,
+    var phone: String? = null,
     val email: String? = null
 )
 
@@ -19,7 +19,6 @@ data class AddressInputModel(
 
 // Discount input
 data class DiscountInput(
-    val description: String,
     val value: Double,
     val valueType: String // Can be "percentage" or "fixedAmount"
 )

@@ -29,7 +29,7 @@
         android:backgroundTint="#ffffff"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="8dp"
-        android:hint="sadvfasdfas"
+        android:hint="@string/SearchText"
         android:padding="12dp"
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"

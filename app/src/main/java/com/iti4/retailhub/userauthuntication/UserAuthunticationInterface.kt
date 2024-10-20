@@ -7,9 +7,10 @@ import com.google.firebase.auth.FirebaseUser
 
 interface UserAuthunticationInterface {
     suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthResult?
-    suspend fun loginOut(): Boolean
+     fun loginOut(): Boolean
     suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult?
-    suspend fun signInWithIntent(intent: Intent): AuthResult?
-    suspend fun signIn(): IntentSender?
+    /*suspend fun signInWithIntent(intent: Intent): AuthResult?
+    suspend fun signIn(): IntentSender?*/
     suspend fun sendEmailVerification(user: FirebaseUser): Boolean
+    suspend fun signWithGoogle(idToken: String): FirebaseUser?
 }

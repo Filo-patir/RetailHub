@@ -3,6 +3,7 @@ package com.iti4.retailhub.datastorage.network
 
 import com.iti4.retailhub.features.summary.Customer
 import com.iti4.retailhub.features.summary.PaymentRequest
+import com.iti4.retailhub.models.CurrencyResponse
 import com.iti4.retailhub.modelsdata.PlaceLocation
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
@@ -23,4 +24,6 @@ interface RetrofitDataSource {
         lat: String,
         lon: String
     ): Flow<Response<com.iti4.retailhub.features.address.PlaceLocation>>
+
+    fun getCurrencyRates(): Flow<Response<CurrencyResponse>>
 }

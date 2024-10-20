@@ -6,6 +6,7 @@ import com.iti4.retailhub.BuildConfig
 import com.iti4.retailhub.datastorage.IRepository
 import com.iti4.retailhub.datastorage.Repository
 import com.iti4.retailhub.datastorage.network.ApiService
+import com.iti4.retailhub.datastorage.network.ApiServiceForCurrencyRates
 import com.iti4.retailhub.datastorage.network.ApiServiceForLocation
 import com.iti4.retailhub.datastorage.network.ApiServiceForLocationGeocoding
 import com.iti4.retailhub.datastorage.network.RemoteDataSource
@@ -17,6 +18,8 @@ import com.iti4.retailhub.datastorage.reviews.ReviewsDataStore
 import com.iti4.retailhub.datastorage.reviews.ReviewsDataStoreInterface
 import com.iti4.retailhub.datastorage.userlocalprofiledata.UserLocalProfileData
 import com.iti4.retailhub.datastorage.userlocalprofiledata.UserLocalProfileDataInterface
+import com.iti4.retailhub.logic.INetworkUtils
+import com.iti4.retailhub.logic.NetworkUtils
 import com.iti4.retailhub.userauthuntication.UserAuthuntication
 import com.iti4.retailhub.userauthuntication.UserAuthunticationInterface
 import dagger.Module
@@ -87,15 +90,25 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideApiServiceForCurrencyRates(): ApiServiceForCurrencyRates {
+        return RetrofitHelper.retrofitInstanceForCurrency.create(
+            ApiServiceForCurrencyRates::class.java
+        )
+    }
+
+    @Provides
+    @Singleton
     fun provideRetrofitDataSource(
         apiService: ApiService,
         apiServiceForLocation: ApiServiceForLocation,
-        apiServiceForLocationGeocoding: ApiServiceForLocationGeocoding
+        apiServiceForLocationGeocoding: ApiServiceForLocationGeocoding,
+        apiServiceForCurrencyRates: ApiServiceForCurrencyRates
     ): RetrofitDataSource {
         return RetrofitDataSourceImp(
             apiService,
             apiServiceForLocation,
-            apiServiceForLocationGeocoding
+            apiServiceForLocationGeocoding,
+            apiServiceForCurrencyRates
         )
     }
 
@@ -115,6 +128,11 @@ class AppModule {
     @Singleton
     fun reviewsDataStore(): ReviewsDataStoreInterface {
         return ReviewsDataStore()
+    }
+
+    @Provides
+    fun provideNetworkUtils(@ApplicationContext context: Context) : INetworkUtils{
+        return NetworkUtils(context)
     }
 
 }

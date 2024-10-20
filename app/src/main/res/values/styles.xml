@@ -8,7 +8,10 @@
         <item name="android:textAlignment">center</item>
 
     </style>
-
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
     <style name="fab_3_rounded">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
@@ -59,5 +62,22 @@
         <item name="android:textColor">@color/grey</item>
         <item name="android:fontFamily">@font/metropolis_regular</item>
     </style>
+
+    <style name="CheckBox" parent="">
+        <!-- Container colors -->
+        <item name="colorOnSurface">@color/transparent</item>
+        <item name="colorPrimary">@color/red_color</item>
+        <item name="colorError">@color/transparent</item>
+        <!-- Icon colors -->
+        <item name="colorSurface">@color/transparent</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnError">@color/transparent</item>
+    </style>
+
+    <style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/red_color</item>
+        <item name="buttonIconTint">@color/white</item>
+    </style>
+
 
 </resources>

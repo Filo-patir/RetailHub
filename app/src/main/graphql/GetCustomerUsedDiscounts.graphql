@@ -1,0 +1,5 @@
+query GetCustomerUsedDiscounts($id: ID!){
+    customer(id: $id) {
+        tags
+    }
+}

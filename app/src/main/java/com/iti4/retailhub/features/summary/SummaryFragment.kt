@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.iti4.retailhub.MainActivity
 import com.iti4.retailhub.R
@@ -30,20 +31,25 @@ class SummaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnContinueShopping.setOnClickListener {
-            findNavController().navigate(R.id.homeFragment)
+            requireActivity().findNavController(R.id.fragmentContainerView2).navigate(
+                R.id.homeFragment, null,
+                NavOptions.Builder().setPopUpTo(R.id.myBagFragment, true).build()
+            )
+
         }
     }
 
 
-
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).findViewById<BottomNavigationView>(R.id.navigationView).visibility = View.GONE
+        (activity as MainActivity).findViewById<BottomNavigationView>(R.id.navigationView).visibility =
+            View.GONE
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as MainActivity).findViewById<BottomNavigationView>(R.id.navigationView).visibility = View.VISIBLE
+        (activity as MainActivity).findViewById<BottomNavigationView>(R.id.navigationView).visibility =
+            View.VISIBLE
     }
 
 

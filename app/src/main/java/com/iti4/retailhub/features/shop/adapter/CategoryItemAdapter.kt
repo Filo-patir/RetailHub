@@ -1,17 +1,15 @@
 package com.iti4.retailhub.features.shop.adapter
 
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iti4.retailhub.R
 import com.iti4.retailhub.constants.CategoriesName
 import com.iti4.retailhub.databinding.RvCategoryItemBinding
 import com.iti4.retailhub.logic.toImg
 
-class CategoryItemAdapter(private val list :List<String>,private val category: String) :
+class CategoryItemAdapter(private val list :List<String>,private val category: String,private val listener : OnClickNavigate) :
     RecyclerView.Adapter<CategoryItemAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = RvCategoryItemBinding.bind(itemView)
@@ -28,8 +26,10 @@ class CategoryItemAdapter(private val list :List<String>,private val category: S
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.binding.apply {
+            val categoryName = CategoriesName.fromId(category)
             textView9.text = item
-            imageView5.setImageResource(item.toImg(CategoriesName.fromId(category)))
+            imageView5.setImageResource(item.toImg(categoryName))
+            root.setOnClickListener { listener.navigate(categoryName.toString(), item) }
         }
     }
 }

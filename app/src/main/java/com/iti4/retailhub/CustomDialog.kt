@@ -30,7 +30,6 @@ class CustomDialog(
             if (type == "address") {
                 if (dataAddress != "null") {
                     actionHandlerAddress!!.deleteAddress(dataAddress)
-
                 }
 
             } else if (type == "mybag") {

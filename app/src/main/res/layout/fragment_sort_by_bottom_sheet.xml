@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/bottom_navigation_background"
+    android:orientation="vertical"
+    tools:context=".features.shop.search.sortby.SortByBottomSheetFragment">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/sortByTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        android:drawableEnd="@drawable/baseline_sort_by_alpha_24"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/sort_by_relevance"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black_variant"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/highPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        android:drawableEnd="@drawable/sort_by"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/sort_from_high_price_to_low_price"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black_variant"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/lowPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparent"
+        android:drawableEnd="@drawable/sort_by"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/sort_from_low_price_to_high_price"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black_variant"
+        android:textSize="16sp" />
+
+</LinearLayout>

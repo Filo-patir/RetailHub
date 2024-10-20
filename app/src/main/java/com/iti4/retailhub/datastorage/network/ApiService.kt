@@ -3,6 +3,7 @@ package com.iti4.retailhub.datastorage.network
 
 import com.iti4.retailhub.features.summary.Customer
 import com.iti4.retailhub.features.summary.PaymentRequest
+import com.iti4.retailhub.models.CurrencyResponse
 
 import com.iti4.retailhub.modelsdata.PlaceLocation
 import okhttp3.ResponseBody
@@ -50,12 +51,20 @@ interface ApiServiceForLocationGeocoding {
     ): Response<com.iti4.retailhub.features.address.PlaceLocation>
 }
 
+interface ApiServiceForCurrencyRates {
+
+    @GET("eed82b21a3974aa47e6265f3/latest/EGP")
+    suspend fun getCurrencyExchangeRates(
+    ): Response<CurrencyResponse>
+}
+
 
 object RetrofitHelper {
     private const val BASE_URL =
         "https://nodejs-serverless-function-express-self-eta.vercel.app/api/"
     private const val BASE_URL_LOCATION = "https://api.locationiq.com/v1/"
     private const val BASE_URL_REVERSE_LOCATION = "https://eu1.locationiq.com/v1/"
+    private const val BASE_URL_CURRENCY = "https://v6.exchangerate-api.com/v6/"
     val retrofitInstance = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
@@ -70,5 +79,11 @@ object RetrofitHelper {
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL_REVERSE_LOCATION)
         .build()
+
+    val retrofitInstanceForCurrency = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(BASE_URL_CURRENCY)
+        .build()
+
 
 }

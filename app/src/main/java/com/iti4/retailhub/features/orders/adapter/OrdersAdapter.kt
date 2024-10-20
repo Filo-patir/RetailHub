@@ -11,9 +11,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.iti4.retailhub.R
 import com.iti4.retailhub.databinding.RvOrderItemBinding
+import com.iti4.retailhub.logic.toTwoDecimalPlaces
+import com.iti4.retailhub.models.CountryCodes
 import com.iti4.retailhub.models.Order
+import com.stripe.android.core.model.Country
 
-class OrdersAdapter : ListAdapter<Order, OrdersAdapter.OrderViewHolder>(OrderDiffUtils()) {
+class OrdersAdapter(private val conversionRate:Double , private val currencyCode:CountryCodes) : ListAdapter<Order, OrdersAdapter.OrderViewHolder>(OrderDiffUtils()) {
     lateinit var context : Context
     class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val binding = RvOrderItemBinding.bind(itemView)
@@ -51,10 +54,11 @@ class OrdersAdapter : ListAdapter<Order, OrdersAdapter.OrderViewHolder>(OrderDif
                 }
             }
             quantity.text = item.quantity.toString()
+
             total.text = buildString {
-                append(item.price)
+                append((item.price.toDouble()*conversionRate).toTwoDecimalPlaces())
                 append(" ")
-                append(item.currency)
+                append(currencyCode.name)
             }
             details.setOnClickListener { Navigation.findNavController(it).navigate(R.id.orderDetailsFragment,
                 bundleOf("orderID" to item.id)

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".features.loginandsignup.view.LoginAuthinticationActivity">
+    tools:context=".features.login_and_signup.view.LoginAuthinticationActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
         android:layout_gravity="center_horizontal"
         app:contentInsetEnd="0dp"
         app:contentInsetStart="0dp"
+        android:visibility="gone"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleMarginStart="88dp"

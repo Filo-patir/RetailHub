@@ -9,9 +9,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.iti4.retailhub.R
 import com.iti4.retailhub.databinding.BrandItemBinding
+import com.iti4.retailhub.features.shop.adapter.OnClickNavigate
 import com.iti4.retailhub.models.Brands
 
-class BrandAdapter : ListAdapter<Brands, BrandAdapter.ViewHolder>(BrandUtils()) {
+class BrandAdapter(private val navigator: OnClickNavigate) : ListAdapter<Brands, BrandAdapter.ViewHolder>(BrandUtils()) {
     class ViewHolder( itemVew: View) : RecyclerView.ViewHolder(itemVew) {
         val binding = BrandItemBinding.bind(itemVew)
     }
@@ -24,8 +25,8 @@ class BrandAdapter : ListAdapter<Brands, BrandAdapter.ViewHolder>(BrandUtils()) 
             Glide.with(holder.itemView)
                 .load(item.image).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()
                 .apply(RequestOptions().override(150, 150))
-                .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView4)
+            root.setOnClickListener { navigator.navigate(item.title,"") }
         }
     }
 }

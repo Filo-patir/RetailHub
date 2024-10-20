@@ -1,5 +1,5 @@
 query Products($query: String!) {
-    products(first: 10, query: $query) {
+    products(first: 30, query: $query) {
         edges {
             cursor
             node {

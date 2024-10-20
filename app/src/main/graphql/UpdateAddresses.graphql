@@ -4,6 +4,8 @@ CustomerInput!) {
         customer {
             addresses{
                 id
+                address1
+                address2
             }
         }
         userErrors {

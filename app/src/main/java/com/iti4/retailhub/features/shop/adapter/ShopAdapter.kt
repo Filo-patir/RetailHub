@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.iti4.retailhub.R
-import com.iti4.retailhub.constants.CategoriesName
 import com.iti4.retailhub.databinding.ShopCategoryTabItemBinding
 import com.iti4.retailhub.models.Category
 
-class ShopAdapter : ListAdapter<Category, ShopAdapter.ViewHolder>(CategoryDiffUtils()){
+class ShopAdapter(private val listener: OnClickNavigate) : ListAdapter<Category, ShopAdapter.ViewHolder>(CategoryDiffUtils()){
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ShopCategoryTabItemBinding.bind(itemView)
     }
@@ -23,13 +22,13 @@ class ShopAdapter : ListAdapter<Category, ShopAdapter.ViewHolder>(CategoryDiffUt
         val item = getItem(position)
         when(position){
             0-> holder.binding.shopCategoryRV.apply {
-                adapter = CategoryItemAdapter(item.productTypes, item.id)
+                adapter = CategoryItemAdapter(item.productTypes, item.id,listener)
             }
             1-> holder.binding.shopCategoryRV.apply {
-                adapter = CategoryItemAdapter(item.productTypes, item.id)
+                adapter = CategoryItemAdapter(item.productTypes, item.id,listener)
             }
             2-> holder.binding.shopCategoryRV.apply {
-                adapter = CategoryItemAdapter(item.productTypes, item.id)
+                adapter = CategoryItemAdapter(item.productTypes, item.id,listener)
             }
         }
     }

@@ -6,20 +6,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.iti4.retailhub.databinding.RvMybagCoupounItemBinding
-import com.iti4.retailhub.features.mybag.Promo
+import com.iti4.retailhub.models.Discount
+import com.iti4.retailhub.models.toDrawable
 
-class DiffUtilPromo : DiffUtil.ItemCallback<Promo>()  {
-    override fun areItemsTheSame(oldItem: Promo, newItem: Promo): Boolean {
+class DiffUtilPromo : DiffUtil.ItemCallback<Discount>() {
+    override fun areItemsTheSame(oldItem: Discount, newItem: Discount): Boolean {
         return oldItem.title == newItem.title
     }
 
-    override fun areContentsTheSame(oldItem: Promo, newItem: Promo): Boolean {
+    override fun areContentsTheSame(oldItem: Discount, newItem: Discount): Boolean {
         return oldItem == newItem
     }
 }
 
-class MyBagCouponRecyclerViewAdapter( private val onClickApply: OnClickApply) :
-    ListAdapter<Promo, MyBagCouponRecyclerViewAdapter.ViewHolder>(DiffUtilPromo()) {
+class MyBagCouponRecyclerViewAdapter(private val onClickApply: OnClickApply) :
+    ListAdapter<Discount, MyBagCouponRecyclerViewAdapter.ViewHolder>(DiffUtilPromo()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -31,10 +32,10 @@ class MyBagCouponRecyclerViewAdapter( private val onClickApply: OnClickApply) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         with(holder.binding) {
-            tvMyBagPromoTitle.text = item.title
-            tvMyBagPromoCode.text = item.code
-            tvMyBagPromoRemainingTime.text = item.remainingTime
-            btnMyBagPromoApply.setOnClickListener{
+            tvMyBagPromoTitle.text = item.value
+            tvMyBagPromoCode.text = item.title
+            ivMyBagPromoImage.setImageResource(item.toDrawable())
+            btnMyBagPromoApply.setOnClickListener {
                 onClickApply.onClickApply(item)
             }
         }

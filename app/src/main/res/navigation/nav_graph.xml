@@ -7,12 +7,15 @@
 
     <fragment
         android:id="@+id/myBagFragment"
-        android:name="com.iti4.retailhub.features.mybag.MyBagFragment"
+        android:name="com.iti4.retailhub.features.mybag.view.MyBagFragment"
         android:label="fragment_my_bag"
         tools:layout="@layout/fragment_my_bag" >
         <action
             android:id="@+id/action_myBagFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_myBagFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -32,7 +35,11 @@
         android:id="@+id/homeFragment"
         android:name="com.iti4.retailhub.features.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailsFragment2"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/shopFragment"
@@ -71,24 +78,11 @@
         android:label="fragment_favorits"
         tools:layout="@layout/fragment_favorits" />
     <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.iti4.retailhub.search.view.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_filterFragment"
-            app:destination="@id/filterFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/filterFragment"
-        android:name="com.iti4.retailhub.search.view.FilterFragment"
-        android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" >
-        <action
-            android:id="@+id/action_filterFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-    </fragment>
-    <fragment
+        android:id="@+id/producSearchFragment"
+        android:name="com.iti4.retailhub.features.productSearch.view.ProductSearchFragment"
+        android:label="fragment_produc_search"
+        tools:layout="@layout/fragment_produc_search" />
+        <fragment
         android:id="@+id/addressMapFragment"
         android:name="com.iti4.retailhub.features.address.AddressMapFragment"
         android:label="AddressMapFragment" />
@@ -116,5 +110,25 @@
         android:name="com.iti4.retailhub.features.orders.orderdetails.OrderDetailsFragment"
         android:label="fragment_order_details"
         tools:layout="@layout/fragment_order_details" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.iti4.retailhub.features.shop.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.iti4.retailhub.features.shop.search.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" >
+        <action
+            android:id="@+id/action_filterFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/filterFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

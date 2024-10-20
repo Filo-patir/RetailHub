@@ -1,9 +1,11 @@
 package com.iti4.retailhub.datastorage.network
 
 
+import android.util.Log
 import com.iti4.retailhub.BuildConfig
 import com.iti4.retailhub.features.summary.Customer
 import com.iti4.retailhub.features.summary.PaymentRequest
+import com.iti4.retailhub.models.CurrencyResponse
 import com.iti4.retailhub.modelsdata.PlaceLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 class RetrofitDataSourceImp @Inject constructor(
     private val apiService: ApiService,
     private val apiServiceForLocation: ApiServiceForLocation,
-    private val apiServiceForLocationGeocoding: ApiServiceForLocationGeocoding
+    private val apiServiceForLocationGeocoding: ApiServiceForLocationGeocoding,
+    private val apiServiceForCurrencyRates: ApiServiceForCurrencyRates
 ) :
     RetrofitDataSource {
 
@@ -40,6 +43,11 @@ class RetrofitDataSourceImp @Inject constructor(
     ): Flow<Response<List<PlaceLocation>>> = flow {
         emit(apiServiceForLocation.getLocationSuggestions(Location_API_KEY, query, 5, 1))
     }
+
+    override fun getCurrencyRates(): Flow<Response<CurrencyResponse>> = flow {
+        emit(apiServiceForCurrencyRates.getCurrencyExchangeRates())
+    }
+
 
     override fun getLocationGeocoding(
         lat: String,

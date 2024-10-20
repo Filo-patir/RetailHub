@@ -40,8 +40,8 @@
                 style="@style/MainTextViewStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/metropolis_semibold"
@@ -69,47 +69,6 @@
                 app:layout_constraintStart_toStartOf="@+id/favoritProductName"
                 app:layout_constraintTop_toBottomOf="@+id/favoritProductName" />
 
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/BasicTextViewStyleGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:text="@string/color"
-                app:layout_constraintStart_toStartOf="@+id/favoritProductName"
-                app:layout_constraintTop_toBottomOf="@+id/favoritProductName" />
-
-            <TextView
-                android:id="@+id/favoritsProductColor"
-                style="@style/BasicTextViewStyleBlackVarient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="@+id/textView2" />
-
-            <TextView
-                android:id="@+id/textView4"
-                style="@style/BasicTextViewStyleGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/size"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/favoritsProductColor"
-                app:layout_constraintTop_toTopOf="@+id/favoritsProductColor" />
-
-            <TextView
-                android:id="@+id/favoritProductSize"
-                style="@style/BasicTextViewStyleBlackVarient"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView4"
-                app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toTopOf="@+id/textView4" />
-
             <ImageButton
                 android:id="@+id/favoritdelete"
                 android:layout_width="wrap_content"
@@ -131,9 +90,8 @@
                 android:fontFamily="@font/metropolis_medium"
                 android:textColor="@color/black_variant"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/favoritProductSize"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/favoritProductSize" />
+                app:layout_constraintTop_toBottomOf="@+id/favoritsProductName2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
